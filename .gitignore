@@ -1,0 +1,40 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments and local settings
+.venv/
+venv/
+.env
+.env.local
+
+# Generated data, models, databases, and logs
+data/raw/
+data/processed/
+data/synthetic/
+models/
+*.csv
+*.xlsx
+*.joblib
+*.pkl
+*.db
+*.sqlite3
+*.log
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Packaging
+build/
+dist/
+*.egg-info/

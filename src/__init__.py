@@ -1,0 +1,1 @@
+"""Affectra application package."""
