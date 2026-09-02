@@ -10,25 +10,31 @@ to take punitive action. Any alert should start a supportive human review.
 
 ## Current status
 
-Sprint 0 is complete. The project foundation, requirements, architecture,
-roadmap, automated tests, and beginner documentation are now in place. The
-original synthetic-data generator has been preserved and is the starting point
-for Sprint 1.
+Sprints 0 and 1 are complete. Affectra now has a configurable, reproducible
+synthetic-data pipeline with schema and relationship validation, sustained
+pressure patterns, an explicit synthetic research label, a command-line
+interface, a generation manifest, automated tests, and beginner documentation.
+Sprint 2 will add a separate ingestion, cleaning, and data-quality layer.
 
 See [SPRINT_LOG.md](SPRINT_LOG.md) for completed work and
 [docs/SPRINT_ROADMAP.md](docs/SPRINT_ROADMAP.md) for what comes next.
 
 ## Data model
 
-The initial synthetic dataset contains four related tables:
+The synthetic dataset contains five related tables and a manifest:
 
 - `agents.csv`: agent details and personal workload baselines
 - `calls.csv`: duration, after-call work, hold time, and transfers
 - `transcripts.csv`: synthetic call text and sentiment indicators
 - `timeoff.csv`: PTO balance, recent PTO usage, and recovery indicators
+- `daily_labels.csv`: hidden simulated pressure trajectories and research-only
+  labels for later model experiments
+- `generation_manifest.json`: the exact settings, filenames, and row counts for
+  the run
 
 Generated data is intentionally excluded from Git. Anyone can recreate it
-from the source code.
+from the source code. See [the data dictionary](docs/data_dictionary.md) for
+column definitions and relationships.
 
 ## Quick start
 
@@ -69,12 +75,28 @@ python -m pytest
 
 The generated CSV files will appear in `data/synthetic/`.
 
+Use command-line options to create a smaller or different reproducible run:
+
+```bash
+python -m src.data_generator \
+  --num-agents 10 \
+  --start-date 2026-04-01 \
+  --num-days 14 \
+  --seed 123 \
+  --output-dir data/synthetic
+```
+
+Run `python -m src.data_generator --help` to see every setting. Reusing the
+same settings and seed produces the same tables. A different seed produces a
+different, but still structurally valid, synthetic population.
+
 ## Learning path
 
 Each sprint has a tutorial in `docs/sprints/`. Start with
-[Sprint 0: Foundation](docs/sprints/sprint-00-foundation.md), then follow the
-roadmap in order. Every tutorial explains the goal, files changed, commands to
-run, concepts learned, verification steps, and blockers.
+[Sprint 0: Foundation](docs/sprints/sprint-00-foundation.md), continue to
+[Sprint 1: Synthetic Data](docs/sprints/sprint-01-synthetic-data.md), then
+follow the roadmap in order. Every tutorial explains the goal, files changed,
+commands to run, concepts learned, verification steps, and blockers.
 
 ## Core scoring plan
 

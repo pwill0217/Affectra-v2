@@ -7,7 +7,7 @@ verification, decisions, and blockers for that day.
 | Sprint | Status | Date | Outcome | Tutorial |
 |---|---|---|---|---|
 | 0 — Foundation | Complete | 2026-09-01 | Reproducible project foundation, requirements, roadmap, tests, and CI | [Open](docs/sprints/sprint-00-foundation.md) |
-| 1 — Synthetic data | Planned | — | Configurable and validated synthetic-data pipeline | — |
+| 1 — Synthetic data | Complete | 2026-09-02 | Seeded CLI pipeline, sustained pressure simulation, research labels, validation, and manifest | [Open](docs/sprints/sprint-01-synthetic-data.md) |
 | 2 — Data quality | Planned | — | Ingestion, cleaning, validation, and reports | — |
 | 3 — Metrics and score | Planned | — | Agent features and transparent 40/20/25/15 score | — |
 | 4 — Analytics | Planned | — | Analysis functions and accessible visualizations | — |
@@ -21,6 +21,13 @@ verification, decisions, and blockers for that day.
 None. Repository creation required human interaction and was resolved before
 Sprint 0 began. Future sprints must stop rather than guess if they require real
 employee data, service credentials, legal policy, or a product-owner decision.
+
+## Latest verification
+
+Sprint 1 passed Ruff and Python compilation. All 16 tests passed with 90% source
+coverage. The default end-to-end run generated and validated 50 agents, 50
+time-off rows, 51,322 calls, 51,322 one-to-one transcripts, and 1,500 daily
+labels. Generated outputs remained excluded from Git.
 
 ## How to use this log
 

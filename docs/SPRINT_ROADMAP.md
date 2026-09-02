@@ -12,7 +12,7 @@ work stops and the blocker is recorded instead of silently guessing.
 - Replace the environment dump with understandable dependency manifests.
 - Add the project layout, automated tests, CI, and beginner documentation.
 
-## Sprint 1 — Reproducible synthetic-data pipeline — Next
+## Sprint 1 — Reproducible synthetic-data pipeline — Complete
 
 - Move generator settings into a clear configuration/CLI.
 - Guarantee reproducible output from a supplied random seed.
@@ -20,9 +20,9 @@ work stops and the blocker is recorded instead of silently guessing.
 - Validate generated schemas and relationships.
 - Add unit and integration tests plus a data dictionary.
 
-## Sprint 2 — Ingestion, cleaning, and data quality
+## Sprint 2 — Ingestion, cleaning, and data quality — Next
 
-- Load all four tables with clear missing-file and schema errors.
+- Load all five tables with clear missing-file and schema errors.
 - Parse dates and numeric values without recursive function calls.
 - Detect missing values, invalid ranges, duplicates, orphan keys, and outliers.
 - Produce cleaned outputs and a machine-readable quality report.

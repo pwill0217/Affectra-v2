@@ -2,8 +2,10 @@
 
 ## Planned data flow
 
-1. `data_generator.py` creates safe, reproducible demo data.
-2. The ingestion layer reads the four inputs and validates their schemas.
+1. `data_generator.py` creates safe, reproducible demo data, validates all
+   relationships, and records the configuration in a manifest.
+2. The ingestion layer reads the five inputs and validates external files
+   independently from the generator.
 3. Preprocessing cleans types and relationships and writes a quality report.
 4. Feature engineering aggregates calls into agent-day metrics.
 5. The scoring layer calculates four explainable component scores.
@@ -37,10 +39,26 @@ their sprint is implemented and tested.
 ## Initial relationships
 
 - `agents.agent_id` is the parent key for calls and time-off records.
+- `daily_labels` contains exactly one `agent_id` and `label_date` row for every
+  simulated agent-day.
 - `calls.call_id` uniquely identifies a call.
 - `calls.transcript_id` links one call to one transcript.
 - `transcripts.call_id` provides a second relationship check.
 - Dates are normalized before time-window calculations.
+
+## Synthetic pressure design
+
+`daily_labels.csv` contains the hidden state used to shape the demo data. A
+seeded subset of agents receives a gradually increasing pressure trajectory.
+Random pressure events can temporarily increase a day, weekends provide a
+small recovery effect, and smoothing carries part of one day's pressure into
+the next. Call volume and difficulty respond to that pressure, creating a
+learnable but imperfect signal.
+
+The `latent_pressure_score`, `pressure_band`, `simulated_pressure_event`, and
+`synthetic_stress_label` columns are target-generation metadata. They must not
+be used as input features in Sprint 5. Doing so would leak the answer into the
+model and produce misleadingly high metrics.
 
 ## Design boundaries
 
