@@ -1,12 +1,15 @@
 # Architecture
 
-## Planned data flow
+## Data flow
 
 1. `data_generator.py` creates safe, reproducible demo data, validates all
    relationships, and records the configuration in a manifest.
-2. The ingestion layer reads the five inputs and validates external files
-   independently from the generator.
-3. Preprocessing cleans types and relationships and writes a quality report.
+2. `data_loader.py` treats the five CSV inputs as untrusted, normalizes known
+   missing markers, and validates files and required columns independently from
+   the generator.
+3. `preprocessing.py` coerces types, applies explicit cleaning policies,
+   repairs relationships, reports IQR outliers without deleting them, and
+   writes five cleaned CSVs plus `data_quality_report.json`.
 4. Feature engineering aggregates calls into agent-day metrics.
 5. The scoring layer calculates four explainable component scores.
 6. The experimental model trains and evaluates against versioned data.
@@ -45,6 +48,20 @@ their sprint is implemented and tested.
 - `calls.transcript_id` links one call to one transcript.
 - `transcripts.call_id` provides a second relationship check.
 - Dates are normalized before time-window calculations.
+
+## Data-quality boundary
+
+Raw CSVs are never edited in place. The loader intentionally reads cells as
+untrusted objects so preprocessing can distinguish a missing value from a value
+that failed conversion. Critical identifiers and date keys cannot be guessed,
+so rows missing them are dropped. Recoverable non-key values use documented
+median or mode imputation. Duplicate keys keep the first row, and child rows
+with invalid relationships are removed before feature calculation.
+
+IQR outlier detection is descriptive and runs once on the cleaned tables. It
+does not recursively delete and recalculate extremes. Unusual workload may be
+the signal Affectra needs to examine, so the report preserves those values for
+human review. See [data_quality.md](data_quality.md) for every policy.
 
 ## Synthetic pressure design
 

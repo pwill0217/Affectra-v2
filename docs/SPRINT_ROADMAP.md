@@ -20,7 +20,7 @@ work stops and the blocker is recorded instead of silently guessing.
 - Validate generated schemas and relationships.
 - Add unit and integration tests plus a data dictionary.
 
-## Sprint 2 — Ingestion, cleaning, and data quality — Next
+## Sprint 2 — Ingestion, cleaning, and data quality — Complete
 
 - Load all five tables with clear missing-file and schema errors.
 - Parse dates and numeric values without recursive function calls.
@@ -28,7 +28,7 @@ work stops and the blocker is recorded instead of silently guessing.
 - Produce cleaned outputs and a machine-readable quality report.
 - Test valid and intentionally broken fixtures.
 
-## Sprint 3 — Agent metrics and explainable stress score
+## Sprint 3 — Agent metrics and explainable stress score — Next
 
 - Aggregate calls and sentiment into daily and rolling agent features.
 - Compare each agent with their personal baseline.

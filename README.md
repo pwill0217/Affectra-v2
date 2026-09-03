@@ -10,11 +10,12 @@ to take punitive action. Any alert should start a supportive human review.
 
 ## Current status
 
-Sprints 0 and 1 are complete. Affectra now has a configurable, reproducible
-synthetic-data pipeline with schema and relationship validation, sustained
-pressure patterns, an explicit synthetic research label, a command-line
-interface, a generation manifest, automated tests, and beginner documentation.
-Sprint 2 will add a separate ingestion, cleaning, and data-quality layer.
+Sprints 0 through 2 are complete. Affectra now has a configurable, reproducible
+synthetic-data pipeline plus an independent ingestion and cleaning boundary.
+It validates files, schemas, types, ranges, duplicates, and relationships;
+writes cleaned tables; and records every data-quality action and statistical
+outlier in a JSON report. Sprint 3 will build agent-day metrics and the first
+transparent stress-risk score.
 
 See [SPRINT_LOG.md](SPRINT_LOG.md) for completed work and
 [docs/SPRINT_ROADMAP.md](docs/SPRINT_ROADMAP.md) for what comes next.
@@ -66,14 +67,17 @@ python -m pip install -r requirements.txt
 python -m pip install -r requirements-dev.txt
 ```
 
-Generate sample data and run the tests:
+Generate sample data, clean it, and run the tests:
 
 ```bash
 python -m src.data_generator
+python -m src.preprocessing
 python -m pytest
 ```
 
-The generated CSV files will appear in `data/synthetic/`.
+Raw generated CSV files appear in `data/synthetic/`. Cleaned CSV files and
+`data_quality_report.json` appear in `data/processed/`. Both directories are
+generated locally and excluded from Git.
 
 Use command-line options to create a smaller or different reproducible run:
 
@@ -90,13 +94,27 @@ Run `python -m src.data_generator --help` to see every setting. Reusing the
 same settings and seed produces the same tables. A different seed produces a
 different, but still structurally valid, synthetic population.
 
+Process a custom input directory without changing the source files:
+
+```bash
+python -m src.preprocessing \
+  --input-dir data/synthetic \
+  --output-dir data/processed \
+  --iqr-multiplier 1.5
+```
+
+The loader expects all five CSV files documented in the
+[data dictionary](docs/data_dictionary.md). See the
+[data-quality policy](docs/data_quality.md) before using non-generated input.
+
 ## Learning path
 
 Each sprint has a tutorial in `docs/sprints/`. Start with
 [Sprint 0: Foundation](docs/sprints/sprint-00-foundation.md), continue to
-[Sprint 1: Synthetic Data](docs/sprints/sprint-01-synthetic-data.md), then
-follow the roadmap in order. Every tutorial explains the goal, files changed,
-commands to run, concepts learned, verification steps, and blockers.
+[Sprint 1: Synthetic Data](docs/sprints/sprint-01-synthetic-data.md), and then
+[Sprint 2: Data Quality](docs/sprints/sprint-02-data-quality.md). Follow the
+roadmap in order. Every tutorial explains the goal, files changed, commands to
+run, concepts learned, verification steps, and blockers.
 
 ## Core scoring plan
 

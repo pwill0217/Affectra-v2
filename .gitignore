@@ -13,9 +13,7 @@ venv/
 .env.local
 
 # Generated data, models, databases, and logs
-data/raw/
-data/processed/
-data/synthetic/
+data/
 models/
 *.csv
 *.xlsx
