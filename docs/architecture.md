@@ -10,8 +10,12 @@
 3. `preprocessing.py` coerces types, applies explicit cleaning policies,
    repairs relationships, reports IQR outliers without deleting them, and
    writes five cleaned CSVs plus `data_quality_report.json`.
-4. Feature engineering aggregates calls into agent-day metrics.
-5. The scoring layer calculates four explainable component scores.
+4. `features.py` uses cleaned agent-days as a complete spine, joins observable
+   call/tone aggregates, calculates rolling windows and personal-baseline ratios,
+   and excludes synthetic target metadata.
+5. `scoring.py` selects each agent's latest feature row, calculates four bounded
+   components and weighted contributions, assigns a review level, explains the
+   evidence, and writes a reproducibility/safety manifest.
 6. The experimental model trains and evaluates against versioned data.
 7. The Streamlit dashboard reads processed outputs and model artifacts.
 8. Monitoring checks data drift, score distribution, and pipeline failures.
@@ -38,6 +42,25 @@ models/                   # Generated locally and excluded from Git
 
 Files listed for future sprints are design targets and will only be added when
 their sprint is implemented and tested.
+
+## Feature and score boundary
+
+`daily_labels.csv` supplies only `(agent_id, label_date)` as the complete
+agent-day spine. The hidden pressure score, pressure band, simulated event, and
+synthetic target never enter `agent_day_features.csv` or the operational score.
+This lets zero-call days remain visible without leaking the generator's answer.
+
+Calls and one-to-one transcripts become daily counts, duration, after-call work,
+hold, transfers, sentiment, negative-call rate, and keyword metrics. A
+configurable row window produces rolling means. Call count, after-call work, and
+duration are divided by each agent's own baseline so the score does not rely
+only on peer comparison.
+
+Time-off data is an end-of-period snapshot, not historical daily data. It is
+therefore used only when scoring the latest feature row for each agent. The full
+daily feature table remains available for trend analytics. Component values are
+normalized and clipped to 0–100 before the visible 40/20/25/15 weighted sum.
+See [scoring.md](scoring.md) for exact formulas and thresholds.
 
 ## Initial relationships
 
@@ -82,6 +105,9 @@ model and produce misleadingly high metrics.
 - Raw inputs are never changed in place.
 - Validation happens before feature calculation.
 - Scoring functions accept prepared features, not raw CSV paths.
+- Operational features never include synthetic target-generation metadata.
+- Current risk output contains one latest snapshot per agent; time-off snapshots
+  are not backfilled as historical truth.
 - The UI calls service functions; it does not contain training logic.
 - Model artifacts include configuration and evaluation metadata.
 - Sensitive text is not written to application logs.

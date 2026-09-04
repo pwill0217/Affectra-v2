@@ -28,7 +28,7 @@ work stops and the blocker is recorded instead of silently guessing.
 - Produce cleaned outputs and a machine-readable quality report.
 - Test valid and intentionally broken fixtures.
 
-## Sprint 3 — Agent metrics and explainable stress score — Next
+## Sprint 3 — Agent metrics and explainable stress score — Complete
 
 - Aggregate calls and sentiment into daily and rolling agent features.
 - Compare each agent with their personal baseline.
@@ -36,7 +36,7 @@ work stops and the blocker is recorded instead of silently guessing.
 - Produce risk levels and plain-language explanations.
 - Test score bounds, edge cases, and weight validation.
 
-## Sprint 4 — Exploratory analytics and visualizations
+## Sprint 4 — Exploratory analytics and visualizations — Next
 
 - Create team summaries, distributions, trends, and correlation analysis.
 - Add at least three well-labeled chart types.

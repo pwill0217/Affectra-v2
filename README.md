@@ -10,12 +10,12 @@ to take punitive action. Any alert should start a supportive human review.
 
 ## Current status
 
-Sprints 0 through 2 are complete. Affectra now has a configurable, reproducible
-synthetic-data pipeline plus an independent ingestion and cleaning boundary.
-It validates files, schemas, types, ranges, duplicates, and relationships;
-writes cleaned tables; and records every data-quality action and statistical
-outlier in a JSON report. Sprint 3 will build agent-day metrics and the first
-transparent stress-risk score.
+Sprints 0 through 3 are complete. Affectra now generates and cleans reproducible
+synthetic data, builds daily and rolling agent features, compares current
+behavior with each agent's personal baseline, and produces a transparent
+0-to-100 decision-support score. Every result exposes its four component scores,
+weighted contributions, evidence, and plain-language explanation. Sprint 4 will
+add exploratory analytics and accessible visualizations.
 
 See [SPRINT_LOG.md](SPRINT_LOG.md) for completed work and
 [docs/SPRINT_ROADMAP.md](docs/SPRINT_ROADMAP.md) for what comes next.
@@ -67,17 +67,26 @@ python -m pip install -r requirements.txt
 python -m pip install -r requirements-dev.txt
 ```
 
-Generate sample data, clean it, and run the tests:
+Generate sample data, clean it, score the latest agent snapshots, and run the
+tests:
 
 ```bash
 python -m src.data_generator
 python -m src.preprocessing
+python -m src.scoring
 python -m pytest
 ```
 
 Raw generated CSV files appear in `data/synthetic/`. Cleaned CSV files and
 `data_quality_report.json` appear in `data/processed/`. Both directories are
 generated locally and excluded from Git.
+
+`data/scored/` contains:
+
+- `agent_day_features.csv`: daily and rolling observable features;
+- `risk_scores.csv`: the latest explainable score for each agent; and
+- `scoring_manifest.json`: weights, thresholds, row counts, source quality, and
+  responsible-use limitations.
 
 Use command-line options to create a smaller or different reproducible run:
 
@@ -112,19 +121,22 @@ The loader expects all five CSV files documented in the
 Each sprint has a tutorial in `docs/sprints/`. Start with
 [Sprint 0: Foundation](docs/sprints/sprint-00-foundation.md), continue to
 [Sprint 1: Synthetic Data](docs/sprints/sprint-01-synthetic-data.md), and then
-[Sprint 2: Data Quality](docs/sprints/sprint-02-data-quality.md). Follow the
-roadmap in order. Every tutorial explains the goal, files changed, commands to
-run, concepts learned, verification steps, and blockers.
+[Sprint 2: Data Quality](docs/sprints/sprint-02-data-quality.md) and
+[Sprint 3: Explainable Scoring](docs/sprints/sprint-03-explainable-scoring.md).
+Follow the roadmap in order. Every tutorial explains the goal, files changed,
+commands to run, concepts learned, verification steps, and blockers.
 
 ## Core scoring plan
 
-The first transparent risk score will use the agreed categories:
+The transparent score uses the agreed categories:
 
 - Workload: 40%
 - Efficiency friction: 20%
 - Tone and sentiment: 25%
 - Recovery and other context: 15%
 
-The weights will remain configurable and visible to users. A later machine-
-learning model will be evaluated separately and will not silently replace the
-explainable score.
+The weights are configurable and visible, must be finite and nonnegative, and
+must sum to 1.0. See [the scoring methodology](docs/scoring.md) for feature
+definitions, normalization ranges, risk levels, and limitations. A later
+machine-learning model will be evaluated separately and will not silently
+replace the explainable score.
