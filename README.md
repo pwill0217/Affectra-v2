@@ -10,12 +10,13 @@ to take punitive action. Any alert should start a supportive human review.
 
 ## Current status
 
-Sprints 0 through 3 are complete. Affectra now generates and cleans reproducible
+Sprints 0 through 4 are complete. Affectra now generates and cleans reproducible
 synthetic data, builds daily and rolling agent features, compares current
 behavior with each agent's personal baseline, and produces a transparent
 0-to-100 decision-support score. Every result exposes its four component scores,
-weighted contributions, evidence, and plain-language explanation. Sprint 4 will
-add exploratory analytics and accessible visualizations.
+weighted contributions, evidence, and plain-language explanation. It also creates
+team summaries, time trends, feature correlations, and four accessible standalone
+charts. Sprint 5 will add a leakage-aware experimental machine-learning baseline.
 
 See [SPRINT_LOG.md](SPRINT_LOG.md) for completed work and
 [docs/SPRINT_ROADMAP.md](docs/SPRINT_ROADMAP.md) for what comes next.
@@ -67,13 +68,14 @@ python -m pip install -r requirements.txt
 python -m pip install -r requirements-dev.txt
 ```
 
-Generate sample data, clean it, score the latest agent snapshots, and run the
-tests:
+Generate sample data, clean it, score the latest agent snapshots, build the
+analytics, and run the tests:
 
 ```bash
 python -m src.data_generator
 python -m src.preprocessing
 python -m src.scoring
+python -m src.analytics
 python -m pytest
 ```
 
@@ -87,6 +89,11 @@ generated locally and excluded from Git.
 - `risk_scores.csv`: the latest explainable score for each agent; and
 - `scoring_manifest.json`: weights, thresholds, row counts, source quality, and
   responsible-use limitations.
+
+`data/analytics/` contains four aggregate CSV tables, an analytics manifest, and
+four standalone HTML charts. Open a file in `data/analytics/charts/` in a browser
+to explore it without starting a server. See the
+[analytics guide](docs/analytics.md) for definitions and interpretation limits.
 
 Use command-line options to create a smaller or different reproducible run:
 
@@ -122,7 +129,8 @@ Each sprint has a tutorial in `docs/sprints/`. Start with
 [Sprint 0: Foundation](docs/sprints/sprint-00-foundation.md), continue to
 [Sprint 1: Synthetic Data](docs/sprints/sprint-01-synthetic-data.md), and then
 [Sprint 2: Data Quality](docs/sprints/sprint-02-data-quality.md) and
-[Sprint 3: Explainable Scoring](docs/sprints/sprint-03-explainable-scoring.md).
+[Sprint 3: Explainable Scoring](docs/sprints/sprint-03-explainable-scoring.md),
+followed by [Sprint 4: Analytics and Visualizations](docs/sprints/sprint-04-analytics-visualizations.md).
 Follow the roadmap in order. Every tutorial explains the goal, files changed,
 commands to run, concepts learned, verification steps, and blockers.
 

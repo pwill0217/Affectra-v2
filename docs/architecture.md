@@ -16,9 +16,11 @@
 5. `scoring.py` selects each agent's latest feature row, calculates four bounded
    components and weighted contributions, assigns a review level, explains the
    evidence, and writes a reproducibility/safety manifest.
-6. The experimental model trains and evaluates against versioned data.
-7. The Streamlit dashboard reads processed outputs and model artifacts.
-8. Monitoring checks data drift, score distribution, and pipeline failures.
+6. `analytics.py` reads those processed outputs, creates aggregate tables and
+   standalone accessible Plotly charts, and records interpretation limits.
+7. The experimental model trains and evaluates against versioned data.
+8. The Streamlit dashboard reads processed outputs and model artifacts.
+9. Monitoring checks data drift, score distribution, and pipeline failures.
 
 ## Source layout
 
@@ -29,7 +31,7 @@ src/
   preprocessing.py        # Sprint 2: cleaning and quality reporting
   features.py             # Sprint 3: agent-day feature engineering
   scoring.py              # Sprint 3: explainable weighted score
-  analytics.py            # Sprint 4: summaries for charts
+  analytics.py            # Sprint 4: summaries, correlations, and charts
   model_training.py       # Sprint 5: experimental ML pipeline
   evaluation.py           # Sprint 5: metrics and limitations
   database.py             # Sprint 7: persistence boundaries
@@ -61,6 +63,19 @@ therefore used only when scoring the latest feature row for each agent. The full
 daily feature table remains available for trend analytics. Component values are
 normalized and clipped to 0–100 before the visible 40/20/25/15 weighted sum.
 See [scoring.md](scoring.md) for exact formulas and thresholds.
+
+## Analytics boundary
+
+Sprint 4 reads only `agent_day_features.csv` and `risk_scores.csv`, so charts do
+not bypass cleaning or scoring safeguards. Team summaries and distributions use
+the current one-row-per-agent score table. Time trends use observable agent-day
+features and are not mislabeled as historical risk scores. Correlations use
+observable, varying features only; target-generation metadata and score
+components are excluded.
+
+The chart files are standalone HTML. They pair color with text, markers, line
+styles, points, or numeric cell annotations. No visualization contains names or
+transcript text. See [analytics.md](analytics.md) for definitions and limits.
 
 ## Initial relationships
 

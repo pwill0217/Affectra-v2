@@ -36,14 +36,14 @@ work stops and the blocker is recorded instead of silently guessing.
 - Produce risk levels and plain-language explanations.
 - Test score bounds, edge cases, and weight validation.
 
-## Sprint 4 — Exploratory analytics and visualizations — Next
+## Sprint 4 — Exploratory analytics and visualizations — Complete
 
 - Create team summaries, distributions, trends, and correlation analysis.
 - Add at least three well-labeled chart types.
 - Ensure charts use processed data and accessible labels.
 - Document what each visualization can and cannot prove.
 
-## Sprint 5 — Experimental machine-learning baseline
+## Sprint 5 — Experimental machine-learning baseline — Next
 
 - Define a leakage-aware feature and target strategy for synthetic data.
 - Build reproducible preprocessing and baseline models.

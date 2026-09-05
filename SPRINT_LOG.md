@@ -10,7 +10,7 @@ verification, decisions, and blockers for that day.
 | 1 — Synthetic data | Complete | 2026-09-02 | Seeded CLI pipeline, sustained pressure simulation, research labels, validation, and manifest | [Open](docs/sprints/sprint-01-synthetic-data.md) |
 | 2 — Data quality | Complete | 2026-09-03 | Defensive ingestion, typed cleaning, relationship repair, outlier reporting, and quality report | [Open](docs/sprints/sprint-02-data-quality.md) |
 | 3 — Metrics and score | Complete | 2026-09-04 | Leakage-safe daily/rolling features, personal-baseline ratios, and explainable 40/20/25/15 scoring | [Open](docs/sprints/sprint-03-explainable-scoring.md) |
-| 4 — Analytics | Planned | — | Analysis functions and accessible visualizations | — |
+| 4 — Analytics | Complete | 2026-09-05 | Team summaries, daily trends, observable-feature correlations, and four accessible standalone charts | [Open](docs/sprints/sprint-04-analytics-visualizations.md) |
 | 5 — ML baseline | Planned | — | Leakage-aware experimental model and evaluation | — |
 | 6 — Dashboard | Planned | — | Interactive Streamlit product | — |
 | 7 — Operations | Planned | — | Persistence, privacy, security, and monitoring | — |
@@ -24,21 +24,23 @@ employee data, service credentials, legal policy, or a product-owner decision.
 
 ## Latest verification
 
-Sprint 3 dependency installation, Ruff linting, and Python compilation passed.
-All 60 tests passed with 93% total source coverage (`features.py`: 91%,
-`scoring.py`: 99%). The end-to-end smoke test generated and processed 20 agents
-across 14 days: 20 agent rows, 20 time-off rows, 9,232 calls, 9,232 matched
-transcripts, and 280 daily labels. Cleaning made 0 corrections, found 0
-relationship warnings, and preserved all rows while reporting 349 IQR outliers.
-Scoring produced 280 agent-day feature rows and 20 latest-agent scores: 13 Low
-and 7 Moderate, ranging from 16.59 to 50.17. No hidden synthetic target metadata
-entered the feature table. Generated outputs remained excluded from Git.
+Sprint 4 dependency installation, Ruff linting, and Python compilation passed.
+All 70 tests passed with 93.50% total source coverage (`analytics.py`: 98%). The
+end-to-end smoke test generated and processed 20 agents across 14 days using
+seed 404: 20 agent rows, 20 time-off rows, 8,805 calls, 8,805 matched
+transcripts, and 280 daily labels. Cleaning preserved all 17,930 rows with 0
+corrections and 0 relationship warnings while reporting 327 non-destructive IQR
+outliers. Scoring produced 280 agent-day rows and 20 current scores: 13 Low and
+7 Moderate, ranging from 12.66 to 49.95. Analytics consumed all 280 feature
+rows and 20 scores and created four tables, four standalone charts, and one
+manifest. Generated outputs remained excluded from Git.
 
 ## Next sprint
 
-Sprint 4 — Exploratory analytics and visualizations. It will create team
-summaries, distributions, trends, correlations, and at least three accessible,
-well-labeled chart types using processed features and scores.
+Sprint 5 — Experimental machine-learning baseline. It will define a
+leakage-aware synthetic feature/target strategy, train reproducible baselines,
+report classification, calibration, and error evidence, and compare them with
+the transparent score without claiming real-world validation.
 
 ## How to use this log
 

@@ -36,8 +36,9 @@ factors contributing to an alert.
 
 ### Data generation and ingestion
 
-- Generate internally consistent agents, calls, transcripts, and time-off CSVs.
-- Accept those four datasets from a configured directory or upload flow.
+- Generate internally consistent agents, calls, transcripts, time-off, and
+  synthetic daily-label CSVs.
+- Accept those five datasets from a configured directory or upload flow.
 - Validate required columns, data types, ranges, uniqueness, and relationships.
 - Produce a human-readable data-quality report.
 
