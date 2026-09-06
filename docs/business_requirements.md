@@ -50,6 +50,8 @@ factors contributing to an alert.
   workload 40%, efficiency friction 20%, tone 25%, and recovery context 15%.
 - Show the exact factors that increased or decreased a score.
 - Train and evaluate a separate experimental machine-learning baseline.
+- Keep agents disjoint between training and testing, prohibit target-generation
+  metadata from inputs, and report class-sensitive and calibration metrics.
 - Never present synthetic-label model accuracy as clinical validation.
 
 ### User experience

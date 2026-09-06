@@ -43,7 +43,7 @@ work stops and the blocker is recorded instead of silently guessing.
 - Ensure charts use processed data and accessible labels.
 - Document what each visualization can and cannot prove.
 
-## Sprint 5 — Experimental machine-learning baseline — Next
+## Sprint 5 — Experimental machine-learning baseline — Complete
 
 - Define a leakage-aware feature and target strategy for synthetic data.
 - Build reproducible preprocessing and baseline models.
@@ -51,7 +51,7 @@ work stops and the blocker is recorded instead of silently guessing.
 - Compare ML results with the transparent score.
 - Clearly document why synthetic performance is not real-world validation.
 
-## Sprint 6 — Interactive Streamlit dashboard
+## Sprint 6 — Interactive Streamlit dashboard — Next
 
 - Build overview, agent detail, data-quality, and model-evaluation pages.
 - Add date, team, and risk filters plus interactive queries.

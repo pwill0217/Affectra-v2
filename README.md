@@ -10,13 +10,15 @@ to take punitive action. Any alert should start a supportive human review.
 
 ## Current status
 
-Sprints 0 through 4 are complete. Affectra now generates and cleans reproducible
+Sprints 0 through 5 are complete. Affectra now generates and cleans reproducible
 synthetic data, builds daily and rolling agent features, compares current
 behavior with each agent's personal baseline, and produces a transparent
 0-to-100 decision-support score. Every result exposes its four component scores,
 weighted contributions, evidence, and plain-language explanation. It also creates
 team summaries, time trends, feature correlations, and four accessible standalone
-charts. Sprint 5 will add a leakage-aware experimental machine-learning baseline.
+charts. A separate leakage-aware experiment trains dummy, logistic-regression,
+and random-forest baselines with agent-disjoint evaluation. Sprint 6 will add the
+interactive Streamlit dashboard.
 
 See [SPRINT_LOG.md](SPRINT_LOG.md) for completed work and
 [docs/SPRINT_ROADMAP.md](docs/SPRINT_ROADMAP.md) for what comes next.
@@ -69,13 +71,14 @@ python -m pip install -r requirements-dev.txt
 ```
 
 Generate sample data, clean it, score the latest agent snapshots, build the
-analytics, and run the tests:
+analytics, train the synthetic-label baselines, and run the tests:
 
 ```bash
 python -m src.data_generator
 python -m src.preprocessing
 python -m src.scoring
 python -m src.analytics
+python -m src.model_training
 python -m pytest
 ```
 
@@ -94,6 +97,13 @@ generated locally and excluded from Git.
 four standalone HTML charts. Open a file in `data/analytics/charts/` in a browser
 to explore it without starting a server. See the
 [analytics guide](docs/analytics.md) for definitions and interpretation limits.
+
+`models/` contains generated model pipelines, held-out predictions, calibration
+and synthetic-team error tables, `evaluation.json`, and a reproducibility
+manifest. Model artifacts are intentionally excluded from Git. The default
+research label is rare, so for a stable demonstration generate at least 30
+agents and use `--at-risk-fraction 0.5`. See the
+[modeling guide](docs/modeling.md) before interpreting any metric.
 
 Use command-line options to create a smaller or different reproducible run:
 
@@ -130,7 +140,8 @@ Each sprint has a tutorial in `docs/sprints/`. Start with
 [Sprint 1: Synthetic Data](docs/sprints/sprint-01-synthetic-data.md), and then
 [Sprint 2: Data Quality](docs/sprints/sprint-02-data-quality.md) and
 [Sprint 3: Explainable Scoring](docs/sprints/sprint-03-explainable-scoring.md),
-followed by [Sprint 4: Analytics and Visualizations](docs/sprints/sprint-04-analytics-visualizations.md).
+followed by [Sprint 4: Analytics and Visualizations](docs/sprints/sprint-04-analytics-visualizations.md)
+and [Sprint 5: Experimental ML](docs/sprints/sprint-05-experimental-ml.md).
 Follow the roadmap in order. Every tutorial explains the goal, files changed,
 commands to run, concepts learned, verification steps, and blockers.
 
@@ -145,6 +156,7 @@ The transparent score uses the agreed categories:
 
 The weights are configurable and visible, must be finite and nonnegative, and
 must sum to 1.0. See [the scoring methodology](docs/scoring.md) for feature
-definitions, normalization ranges, risk levels, and limitations. A later
-machine-learning model will be evaluated separately and will not silently
-replace the explainable score.
+definitions, normalization ranges, risk levels, and limitations. The experimental
+machine-learning models are evaluated separately and do not silently replace the
+explainable score. Synthetic-label performance demonstrates the pipeline only;
+it does not validate real-world burnout prediction.

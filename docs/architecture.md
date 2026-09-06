@@ -18,9 +18,14 @@
    evidence, and writes a reproducibility/safety manifest.
 6. `analytics.py` reads those processed outputs, creates aggregate tables and
    standalone accessible Plotly charts, and records interpretation limits.
-7. The experimental model trains and evaluates against versioned data.
-8. The Streamlit dashboard reads processed outputs and model artifacts.
-9. Monitoring checks data drift, score distribution, and pipeline failures.
+7. `model_training.py` joins the research-only binary target after feature
+   engineering, splits complete agents into training/test groups, and fits
+   reproducible dummy, logistic, and random-forest baselines.
+8. `evaluation.py` reports classification, calibration, confusion, and
+   synthetic-team error evidence and compares the best model with the current
+   transparent score without replacing it.
+9. The Streamlit dashboard reads processed outputs and model artifacts.
+10. Monitoring checks data drift, score distribution, and pipeline failures.
 
 ## Source layout
 
@@ -32,8 +37,8 @@ src/
   features.py             # Sprint 3: agent-day feature engineering
   scoring.py              # Sprint 3: explainable weighted score
   analytics.py            # Sprint 4: summaries, correlations, and charts
-  model_training.py       # Sprint 5: experimental ML pipeline
-  evaluation.py           # Sprint 5: metrics and limitations
+  model_training.py       # Sprint 5: grouped, reproducible ML baselines
+  evaluation.py           # Sprint 5: metrics, calibration, and errors
   database.py             # Sprint 7: persistence boundaries
   app.py                  # Sprint 6: Streamlit interface
 tests/                    # Automated tests matching the source modules
@@ -114,6 +119,22 @@ The `latent_pressure_score`, `pressure_band`, `simulated_pressure_event`, and
 `synthetic_stress_label` columns are target-generation metadata. They must not
 be used as input features in Sprint 5. Doing so would leak the answer into the
 model and produce misleadingly high metrics.
+
+## Experimental model boundary
+
+Sprint 5 uses `synthetic_stress_label` only as the research target, joining it
+after observable features are built. An explicit allow-list contains eleven
+rolling call/tone and personal-baseline features. Identity, team, dates, hidden
+pressure metadata, and all time-off snapshot fields are forbidden as model
+inputs. The latter prevents one end-of-period snapshot from being presented as
+historical information.
+
+The split holds out complete agents, so no agent contributes rows to both train
+and test. Dummy-prior, scaled logistic-regression, and random-forest baselines
+share the same held-out rows. Accuracy, balanced accuracy, precision, recall,
+F1, ROC AUC, Brier score, log loss, calibration bins, confusion counts, and
+synthetic-team errors are stored. See [modeling.md](modeling.md) for the full
+strategy and interpretation limits.
 
 ## Design boundaries
 
