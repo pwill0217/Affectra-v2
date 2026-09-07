@@ -10,15 +10,17 @@ to take punitive action. Any alert should start a supportive human review.
 
 ## Current status
 
-Sprints 0 through 5 are complete. Affectra now generates and cleans reproducible
+Sprints 0 through 6 are complete. Affectra now generates and cleans reproducible
 synthetic data, builds daily and rolling agent features, compares current
 behavior with each agent's personal baseline, and produces a transparent
 0-to-100 decision-support score. Every result exposes its four component scores,
 weighted contributions, evidence, and plain-language explanation. It also creates
 team summaries, time trends, feature correlations, and four accessible standalone
 charts. A separate leakage-aware experiment trains dummy, logistic-regression,
-and random-forest baselines with agent-disjoint evaluation. Sprint 6 will add the
-interactive Streamlit dashboard.
+and random-forest baselines with agent-disjoint evaluation. An interactive
+Streamlit dashboard now connects overview, agent-detail, data-quality, and model-
+evaluation pages. Sprint 7 will add persistence, privacy/security guidance, and
+monitoring.
 
 See [SPRINT_LOG.md](SPRINT_LOG.md) for completed work and
 [docs/SPRINT_ROADMAP.md](docs/SPRINT_ROADMAP.md) for what comes next.
@@ -82,6 +84,16 @@ python -m src.model_training
 python -m pytest
 ```
 
+Launch the dashboard after the generated outputs exist:
+
+```bash
+python -m streamlit run src/app.py
+```
+
+Open the local URL printed by Streamlit. See the
+[dashboard guide](docs/dashboard.md) for page behavior, filters, alternate data
+paths, and troubleshooting.
+
 Raw generated CSV files appear in `data/synthetic/`. Cleaned CSV files and
 `data_quality_report.json` appear in `data/processed/`. Both directories are
 generated locally and excluded from Git.
@@ -141,7 +153,8 @@ Each sprint has a tutorial in `docs/sprints/`. Start with
 [Sprint 2: Data Quality](docs/sprints/sprint-02-data-quality.md) and
 [Sprint 3: Explainable Scoring](docs/sprints/sprint-03-explainable-scoring.md),
 followed by [Sprint 4: Analytics and Visualizations](docs/sprints/sprint-04-analytics-visualizations.md)
-and [Sprint 5: Experimental ML](docs/sprints/sprint-05-experimental-ml.md).
+and [Sprint 5: Experimental ML](docs/sprints/sprint-05-experimental-ml.md), then
+[Sprint 6: Streamlit Dashboard](docs/sprints/sprint-06-streamlit-dashboard.md).
 Follow the roadmap in order. Every tutorial explains the goal, files changed,
 commands to run, concepts learned, verification steps, and blockers.
 

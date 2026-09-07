@@ -60,6 +60,7 @@ factors contributing to an alert.
 - Provide individual trends and component explanations.
 - Include at least three useful chart types.
 - Support interactive team, date, and risk-level filters.
+- Let users search/select synthetic agents and compare experimental models.
 - Explain limitations and appropriate use inside the application.
 
 ### Reliability and operations

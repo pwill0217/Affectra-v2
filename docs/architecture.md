@@ -24,8 +24,11 @@
 8. `evaluation.py` reports classification, calibration, confusion, and
    synthetic-team error evidence and compares the best model with the current
    transparent score without replacing it.
-9. The Streamlit dashboard reads processed outputs and model artifacts.
-10. Monitoring checks data drift, score distribution, and pipeline failures.
+9. `dashboard.py` validates and filters generated score, feature, quality, and
+   model-evaluation outputs and builds reusable accessible figures.
+10. `app.py` renders overview, agent-detail, data-quality, and model-evaluation
+   pages without embedding transformation, scoring, or training logic.
+11. Monitoring checks data drift, score distribution, and pipeline failures.
 
 ## Source layout
 
@@ -39,8 +42,9 @@ src/
   analytics.py            # Sprint 4: summaries, correlations, and charts
   model_training.py       # Sprint 5: grouped, reproducible ML baselines
   evaluation.py           # Sprint 5: metrics, calibration, and errors
+  dashboard.py            # Sprint 6: validated UI data and figures
+  app.py                  # Sprint 6: Streamlit pages and interactions
   database.py             # Sprint 7: persistence boundaries
-  app.py                  # Sprint 6: Streamlit interface
 tests/                    # Automated tests matching the source modules
 docs/sprints/             # Beginner walkthrough and evidence for every sprint
 data/                     # Generated locally and excluded from Git
@@ -135,6 +139,21 @@ share the same held-out rows. Accuracy, balanced accuracy, precision, recall,
 F1, ROC AUC, Brier score, log loss, calibration bins, confusion counts, and
 synthetic-team errors are stored. See [modeling.md](modeling.md) for the full
 strategy and interpretation limits.
+
+## Dashboard boundary
+
+The Streamlit entrypoint does not generate data, repair rows, calculate scores,
+or train models. `dashboard.py` loads the versioned output contracts and rejects
+missing or invalid inputs before anything is displayed. A cached data bundle is
+shared by all four pages. Team, review-level, date, agent search, agent selection,
+and model selection are UI queries over generated outputs, not mutations.
+
+The overview displays filtered current scores and aggregate distributions. Agent
+detail exposes all four components, evidence sentences, and observable baseline
+trends. Data quality shows corrections, preserved outliers, and relationship
+checks. Model evaluation keeps rare-class, calibration, confusion, split, and
+synthetic-team error evidence visible. Responsible-use language appears before
+all content. See [dashboard.md](dashboard.md) for setup and page behavior.
 
 ## Design boundaries
 

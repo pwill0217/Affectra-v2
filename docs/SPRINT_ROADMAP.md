@@ -51,14 +51,14 @@ work stops and the blocker is recorded instead of silently guessing.
 - Compare ML results with the transparent score.
 - Clearly document why synthetic performance is not real-world validation.
 
-## Sprint 6 — Interactive Streamlit dashboard — Next
+## Sprint 6 — Interactive Streamlit dashboard — Complete
 
 - Build overview, agent detail, data-quality, and model-evaluation pages.
 - Add date, team, and risk filters plus interactive queries.
 - Explain each score and display responsible-use notices.
 - Add UI smoke tests and launch instructions.
 
-## Sprint 7 — Persistence, privacy, security, and monitoring
+## Sprint 7 — Persistence, privacy, security, and monitoring — Next
 
 - Add a local persistence layer with safe initialization.
 - Keep secrets and sensitive data out of source control and logs.

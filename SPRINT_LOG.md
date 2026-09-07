@@ -12,7 +12,7 @@ verification, decisions, and blockers for that day.
 | 3 — Metrics and score | Complete | 2026-09-04 | Leakage-safe daily/rolling features, personal-baseline ratios, and explainable 40/20/25/15 scoring | [Open](docs/sprints/sprint-03-explainable-scoring.md) |
 | 4 — Analytics | Complete | 2026-09-05 | Team summaries, daily trends, observable-feature correlations, and four accessible standalone charts | [Open](docs/sprints/sprint-04-analytics-visualizations.md) |
 | 5 — ML baseline | Complete | 2026-09-06 | Agent-disjoint dummy, logistic, and forest baselines with classification, calibration, error, and score-comparison evidence | [Open](docs/sprints/sprint-05-experimental-ml.md) |
-| 6 — Dashboard | Planned | — | Interactive Streamlit product | — |
+| 6 — Dashboard | Complete | 2026-09-07 | Four-page Streamlit product with shared filters, score explanations, data-quality and model evidence, accessible charts, and responsible-use guidance | [Open](docs/sprints/sprint-06-streamlit-dashboard.md) |
 | 7 — Operations | Planned | — | Persistence, privacy, security, and monitoring | — |
 | 8 — Release | Planned | — | Integrated QA, deployment docs, and final handoff | — |
 
@@ -24,26 +24,29 @@ employee data, service credentials, legal policy, or a product-owner decision.
 
 ## Latest verification
 
-Sprint 5 dependency installation, Ruff linting, and Python compilation passed.
-All 97 tests passed with 94.48% total source coverage (`evaluation.py`: 100%,
-`model_training.py`: 98%). The seeded end-to-end smoke test generated 30 agents
-over 30 days: 34,104 calls, 34,104 transcripts, and 900 daily labels. Cleaning
-preserved all 69,168 rows with 0 corrections and 0 relationship warnings while
-reporting 1,282 non-destructive IQR outliers. Scoring created 900 feature rows
-and 30 current scores; analytics wrote all nine artifacts. Model evaluation used
-660 rows from 22 training agents and 240 rows from 8 entirely held-out agents,
-with 0 overlapping agents. The test target had 237 negatives and 3 positives.
-Random forest ranked highest by balanced accuracy (0.808017), with 0.945833
-accuracy, 0.142857 precision, 0.666667 recall, 0.235294 F1, 0.960619 ROC AUC,
-0.031607 Brier score, and 0.050609 expected calibration error. The dummy model's
-0.9875 accuracy but 0 recall demonstrates the class-imbalance warning. Generated
+Sprint 6 dependency installation, Ruff linting, and Python compilation passed.
+All 102 tests passed with 94.17% total source coverage (`app.py`: 93%,
+`dashboard.py`: 92%). Streamlit `AppTest` rendered all four pages from complete
+generated outputs with zero exceptions, and a headless Streamlit server reached
+its started state. The seeded end-to-end smoke test generated 30 agents over 30
+days: 33,151 calls, 33,151 transcripts, and 900 labels. Cleaning preserved all
+67,262 rows with 0 corrections and 0 relationship warnings while reporting
+1,317 non-destructive outliers. Scoring created 900 feature rows and 30 current
+scores: 13 Low and 17 Moderate. Analytics wrote all nine artifacts. Model
+evaluation used 660 rows from 22 training agents and 240 rows from 8 entirely
+held-out agents, with 0 overlapping agents. The test target had 235 negatives
+and 5 positives. Logistic regression ranked highest by balanced accuracy
+(0.853191), with 0.904167 accuracy, 0.153846 precision, 0.800000 recall,
+0.258065 F1, 0.957447 ROC AUC, 0.058426 Brier score, 0.170341 log loss, and
+0.092672 expected calibration error. These generated results verify workflow
+behavior only; they do not validate real-world burnout prediction. Generated
 datasets and model artifacts remained excluded from Git.
 
 ## Next sprint
 
-Sprint 6 — Interactive Streamlit dashboard. It will add overview, agent-detail,
-data-quality, and model-evaluation pages with filters, explanations,
-responsible-use notices, UI smoke tests, and launch instructions.
+Sprint 7 — Operations. It will add persistence, configuration and secrets
+practices, privacy and security guidance, structured logging, health checks, and
+drift monitoring.
 
 ## How to use this log
 
