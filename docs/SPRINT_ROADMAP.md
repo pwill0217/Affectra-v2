@@ -58,14 +58,14 @@ work stops and the blocker is recorded instead of silently guessing.
 - Explain each score and display responsible-use notices.
 - Add UI smoke tests and launch instructions.
 
-## Sprint 7 — Persistence, privacy, security, and monitoring — Next
+## Sprint 7 — Persistence, privacy, security, and monitoring — Complete
 
 - Add a local persistence layer with safe initialization.
 - Keep secrets and sensitive data out of source control and logs.
 - Add role/access design notes, retention guidance, and threat analysis.
 - Track schema, drift, and score-distribution health indicators.
 
-## Sprint 8 — Release hardening and final handoff
+## Sprint 8 — Release hardening and final handoff — Next
 
 - Run the full test, lint, data, model, and dashboard workflow from a fresh setup.
 - Fix integration failures and remove dead or duplicated code.

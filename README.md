@@ -10,7 +10,7 @@ to take punitive action. Any alert should start a supportive human review.
 
 ## Current status
 
-Sprints 0 through 6 are complete. Affectra now generates and cleans reproducible
+Sprints 0 through 7 are complete. Affectra now generates and cleans reproducible
 synthetic data, builds daily and rolling agent features, compares current
 behavior with each agent's personal baseline, and produces a transparent
 0-to-100 decision-support score. Every result exposes its four component scores,
@@ -19,8 +19,9 @@ team summaries, time trends, feature correlations, and four accessible standalon
 charts. A separate leakage-aware experiment trains dummy, logistic-regression,
 and random-forest baselines with agent-disjoint evaluation. An interactive
 Streamlit dashboard now connects overview, agent-detail, data-quality, and model-
-evaluation pages. Sprint 7 will add persistence, privacy/security guidance, and
-monitoring.
+evaluation pages. A local operations layer now stores immutable, minimized run
+evidence and reports schema, pipeline, and aggregate score-distribution health.
+Sprint 8 will harden the integrated release and complete the final handoff.
 
 See [SPRINT_LOG.md](SPRINT_LOG.md) for completed work and
 [docs/SPRINT_ROADMAP.md](docs/SPRINT_ROADMAP.md) for what comes next.
@@ -81,6 +82,7 @@ python -m src.preprocessing
 python -m src.scoring
 python -m src.analytics
 python -m src.model_training
+python -m src.operations --run-version demo-001 --initialize-baseline
 python -m pytest
 ```
 
@@ -116,6 +118,13 @@ manifest. Model artifacts are intentionally excluded from Git. The default
 research label is rare, so for a stable demonstration generate at least 30
 agents and use `--at-risk-fraction 0.5`. See the
 [modeling guide](docs/modeling.md) before interpreting any metric.
+
+`data/affectra.db` contains privacy-minimized, versioned run evidence, while
+`data/operations/` contains the generated monitoring baseline and latest health
+report. These are local artifacts excluded from Git. Use a new `--run-version`
+for every completed pipeline run and initialize the baseline only after
+inspecting a known-good run. See the [operations guide](docs/operations.md) and
+[privacy/security design](docs/privacy_security.md) before using this layer.
 
 Use command-line options to create a smaller or different reproducible run:
 
@@ -154,7 +163,8 @@ Each sprint has a tutorial in `docs/sprints/`. Start with
 [Sprint 3: Explainable Scoring](docs/sprints/sprint-03-explainable-scoring.md),
 followed by [Sprint 4: Analytics and Visualizations](docs/sprints/sprint-04-analytics-visualizations.md)
 and [Sprint 5: Experimental ML](docs/sprints/sprint-05-experimental-ml.md), then
-[Sprint 6: Streamlit Dashboard](docs/sprints/sprint-06-streamlit-dashboard.md).
+[Sprint 6: Streamlit Dashboard](docs/sprints/sprint-06-streamlit-dashboard.md)
+and [Sprint 7: Operations](docs/sprints/sprint-07-operations.md).
 Follow the roadmap in order. Every tutorial explains the goal, files changed,
 commands to run, concepts learned, verification steps, and blockers.
 

@@ -68,6 +68,8 @@ factors contributing to an alert.
 - Store processed records and model metadata with reproducible versions.
 - Test core generation, validation, transformation, scoring, and prediction code.
 - Log failures without logging transcript content or other sensitive fields.
+- Persist versioned, minimized score/model evidence without names or raw text.
+- Compare schema and aggregate score distributions with an explicit baseline.
 - Document local setup, use, maintenance, and troubleshooting.
 
 ## 5. Nonfunctional requirements
@@ -93,6 +95,7 @@ The portfolio release is complete when:
 - Model evaluation reports appropriate metrics, limitations, and leakage checks.
 - Documentation lets a beginner reproduce every sprint.
 - Automated tests pass in GitHub Actions.
+- Operational health evidence is machine-readable and privacy-minimized.
 
 ## 7. Out of scope for the first release
 
@@ -101,6 +104,8 @@ The portfolio release is complete when:
 - Live call recording or covert employee monitoring
 - Production integrations with a specific contact-center vendor
 - Claims that the score has been clinically validated
+- Production use without authentication, authorization, retention, and
+  governance controls
 
 ## 8. Assumptions and risks
 

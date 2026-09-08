@@ -28,7 +28,10 @@
    model-evaluation outputs and builds reusable accessible figures.
 10. `app.py` renders overview, agent-detail, data-quality, and model-evaluation
    pages without embedding transformation, scoring, or training logic.
-11. Monitoring checks data drift, score distribution, and pipeline failures.
+11. `operations.py` coordinates privacy-safe logging, immutable persistence,
+    and health evidence after a completed pipeline run.
+12. `database.py` stores a minimized SQLite snapshot; `monitoring.py` compares
+    schema and aggregate score-distribution indicators with an explicit baseline.
 
 ## Source layout
 
@@ -44,7 +47,9 @@ src/
   evaluation.py           # Sprint 5: metrics, calibration, and errors
   dashboard.py            # Sprint 6: validated UI data and figures
   app.py                  # Sprint 6: Streamlit pages and interactions
-  database.py             # Sprint 7: persistence boundaries
+  database.py             # Sprint 7: minimized, immutable local persistence
+  monitoring.py           # Sprint 7: schema, pipeline, and distribution health
+  operations.py           # Sprint 7: configuration, safe logging, and CLI
 tests/                    # Automated tests matching the source modules
 docs/sprints/             # Beginner walkthrough and evidence for every sprint
 data/                     # Generated locally and excluded from Git
@@ -155,6 +160,22 @@ checks. Model evaluation keeps rare-class, calibration, confusion, split, and
 synthetic-team error evidence visible. Responsible-use language appears before
 all content. See [dashboard.md](dashboard.md) for setup and page behavior.
 
+## Operations boundary
+
+Operations runs only after the generated pipeline artifacts pass the dashboard
+contract. SQLite initialization creates missing tables without dropping or
+rewriting existing data. A unique run version, source-quality status, row counts,
+dataset fingerprint, numeric score components, review levels, and model-level
+metrics are stored in one transaction. Names, teams, roles, explanations, raw
+calls, transcripts, predictions, and secrets are excluded.
+
+Monitoring fingerprints complete feature/score column sets, checks core pipeline
+invariants, summarizes the identity-free score distribution, and compares those
+indicators with an explicitly initialized baseline. Alerts request investigation;
+they do not measure wellbeing or validate prediction. Structured logs use an
+allow-list and record exception types rather than free-form error messages. See
+[operations.md](operations.md) and [privacy_security.md](privacy_security.md).
+
 ## Design boundaries
 
 - Raw inputs are never changed in place.
@@ -166,3 +187,5 @@ all content. See [dashboard.md](dashboard.md) for setup and page behavior.
 - The UI calls service functions; it does not contain training logic.
 - Model artifacts include configuration and evaluation metadata.
 - Sensitive text is not written to application logs.
+- Local persistence is additive and rejects duplicate run versions.
+- Monitoring stores aggregate evidence, not individual health claims.
