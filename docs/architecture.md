@@ -32,6 +32,9 @@
     and health evidence after a completed pipeline run.
 12. `database.py` stores a minimized SQLite snapshot; `monitoring.py` compares
     schema and aggregate score-distribution indicators with an explicit baseline.
+13. `release.py` gives the synthetic portfolio a single safe orchestration path,
+    renders all four UI pages, verifies the complete artifact contract, and
+    writes `release_manifest.json` as the final reproducibility receipt.
 
 ## Source layout
 
@@ -50,14 +53,15 @@ src/
   database.py             # Sprint 7: minimized, immutable local persistence
   monitoring.py           # Sprint 7: schema, pipeline, and distribution health
   operations.py           # Sprint 7: configuration, safe logging, and CLI
+  release.py              # Sprint 8: complete synthetic release orchestration
 tests/                    # Automated tests matching the source modules
 docs/sprints/             # Beginner walkthrough and evidence for every sprint
 data/                     # Generated locally and excluded from Git
 models/                   # Generated locally and excluded from Git
 ```
 
-Files listed for future sprints are design targets and will only be added when
-their sprint is implemented and tested.
+The planned source modules are implemented and covered by the Sprint 0–8 test
+and documentation trail.
 
 ## Feature and score boundary
 
@@ -176,6 +180,24 @@ they do not measure wellbeing or validate prediction. Structured logs use an
 allow-list and record exception types rather than free-form error messages. See
 [operations.md](operations.md) and [privacy_security.md](privacy_security.md).
 
+## Release boundary
+
+The release orchestrator creates one isolated directory and calls the existing
+stage APIs; it does not duplicate their transformation logic. Before starting,
+it rejects a file path or non-empty directory so historical evidence cannot be
+silently mixed or overwritten. After all stages finish, it requires every CSV,
+JSON, chart, model artifact, health artifact, and database in the versioned
+contract. It also checks the generator's explicit `synthetic_only` marker and
+renders every Streamlit page through the UI test runner.
+
+`release_manifest.json` records settings, row counts, data-quality totals, score
+distribution, agent-disjoint model split, operational health, rendered pages,
+and the complete artifact list. It is evidence that the software path ran—not
+evidence that the score measures human burnout. See
+[the release guide](release_guide.md) for use and
+[the pilot requirements](pilot_requirements.md) for the unsupported real-world
+boundary.
+
 ## Design boundaries
 
 - Raw inputs are never changed in place.
@@ -189,3 +211,7 @@ allow-list and record exception types rather than free-form error messages. See
 - Sensitive text is not written to application logs.
 - Local persistence is additive and rejects duplicate run versions.
 - Monitoring stores aggregate evidence, not individual health claims.
+- Release destinations are append-by-new-directory; the orchestrator never
+  deletes or overwrites existing evidence.
+- The supported 1.0 deployment is a local synthetic demonstration. Networked or
+  real-data operation requires the documented pilot gates.

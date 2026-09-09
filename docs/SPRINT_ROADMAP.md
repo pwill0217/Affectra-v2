@@ -65,12 +65,17 @@ work stops and the blocker is recorded instead of silently guessing.
 - Add role/access design notes, retention guidance, and threat analysis.
 - Track schema, drift, and score-distribution health indicators.
 
-## Sprint 8 — Release hardening and final handoff — Next
+## Sprint 8 — Release hardening and final handoff — Complete
 
 - Run the full test, lint, data, model, and dashboard workflow from a fresh setup.
 - Fix integration failures and remove dead or duplicated code.
 - Add deployment, maintenance, troubleshooting, and demo instructions.
 - Produce a final completion matrix and identify real-world pilot requirements.
+
+All planned Sprints 0 through 8 are complete. Future work is governed by the
+[real-world pilot requirements](pilot_requirements.md), not an implied next
+sprint. No real-data pilot should begin until its human, legal, privacy,
+security, validity, and operational decisions have named owners and evidence.
 
 ## Definition of done for every sprint
 

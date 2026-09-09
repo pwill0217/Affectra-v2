@@ -10,21 +10,24 @@ to take punitive action. Any alert should start a supportive human review.
 
 ## Current status
 
-Sprints 0 through 7 are complete. Affectra now generates and cleans reproducible
-synthetic data, builds daily and rolling agent features, compares current
-behavior with each agent's personal baseline, and produces a transparent
-0-to-100 decision-support score. Every result exposes its four component scores,
-weighted contributions, evidence, and plain-language explanation. It also creates
-team summaries, time trends, feature correlations, and four accessible standalone
-charts. A separate leakage-aware experiment trains dummy, logistic-regression,
-and random-forest baselines with agent-disjoint evaluation. An interactive
-Streamlit dashboard now connects overview, agent-detail, data-quality, and model-
-evaluation pages. A local operations layer now stores immutable, minimized run
-evidence and reports schema, pipeline, and aggregate score-distribution health.
-Sprint 8 will harden the integrated release and complete the final handoff.
+Sprints 0 through 8 are complete. Affectra 1.0 now provides one tested path from
+reproducible synthetic data through cleaning, feature engineering, transparent
+scoring, analytics, experimental model evaluation, a four-page Streamlit
+dashboard, privacy-minimized persistence, and operational health evidence. The
+release command verifies every stage and writes a machine-readable artifact
+receipt. GitHub Actions repeats linting, compilation, coverage, and the complete
+synthetic release smoke test on every push and pull request.
 
-See [SPRINT_LOG.md](SPRINT_LOG.md) for completed work and
-[docs/SPRINT_ROADMAP.md](docs/SPRINT_ROADMAP.md) for what comes next.
+This is a **local, synthetic-data portfolio release**, not a production employee
+monitoring system. Its scores and model metrics demonstrate software behavior;
+they do not validate burnout prediction, diagnosis, causality, or employment use.
+Do not load real employee/customer data or expose the local dashboard publicly.
+
+See [SPRINT_LOG.md](SPRINT_LOG.md) for exact sprint evidence,
+[the completion matrix](docs/completion_matrix.md) for requirement coverage,
+[the release guide](docs/release_guide.md) for deployment and maintenance, and
+[the pilot requirements](docs/pilot_requirements.md) for the human decisions and
+controls required before any real-world evaluation.
 
 ## Data model
 
@@ -65,65 +68,72 @@ Activate it on Windows PowerShell:
 .venv\Scripts\Activate.ps1
 ```
 
-Install the project:
+Install the project and verify the fresh environment:
 
 ```bash
 python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-python -m pip install -r requirements-dev.txt
+python -m pip install -r requirements.txt -r requirements-dev.txt
+python -m pip check
+python -m ruff check .
+python -m compileall -q src tests
+python -m pytest --cov=src --cov-report=term-missing --cov-fail-under=90
 ```
 
-Generate sample data, clean it, score the latest agent snapshots, build the
-analytics, train the synthetic-label baselines, and run the tests:
+Run the complete generated-data-to-dashboard-and-operations demonstration with
+one command:
 
 ```bash
-python -m src.data_generator
-python -m src.preprocessing
-python -m src.scoring
-python -m src.analytics
-python -m src.model_training
-python -m src.operations --run-version demo-001 --initialize-baseline
-python -m pytest
+python -m src.release
 ```
 
-Launch the dashboard after the generated outputs exist:
+The command deliberately refuses to mix with a non-empty destination. For a
+second run, supply a new `--output-root` and unique `--run-version`. Read
+`data/release-demo/release_manifest.json` for the exact configuration, row
+counts, checks, dashboard pages, and 36 verified artifacts.
+
+Launch the dashboard against those release outputs:
 
 ```bash
+export AFFECTRA_SCORED_DIR=data/release-demo/scored
+export AFFECTRA_PROCESSED_DIR=data/release-demo/processed
+export AFFECTRA_MODELS_DIR=data/release-demo/models
 python -m streamlit run src/app.py
 ```
 
 Open the local URL printed by Streamlit. See the
-[dashboard guide](docs/dashboard.md) for page behavior, filters, alternate data
-paths, and troubleshooting.
+[release guide](docs/release_guide.md) for PowerShell commands, a five-minute
+demo script, manual stage-by-stage commands, maintenance, recovery, and
+troubleshooting. The [dashboard guide](docs/dashboard.md) explains every page.
 
-Raw generated CSV files appear in `data/synthetic/`. Cleaned CSV files and
-`data_quality_report.json` appear in `data/processed/`. Both directories are
-generated locally and excluded from Git.
+Within the default self-contained release, raw generated CSV files appear in
+`data/release-demo/synthetic/`. Cleaned CSV files and
+`data_quality_report.json` appear in `data/release-demo/processed/`. All release
+outputs are generated locally and excluded from Git.
 
-`data/scored/` contains:
+`data/release-demo/scored/` contains:
 
 - `agent_day_features.csv`: daily and rolling observable features;
 - `risk_scores.csv`: the latest explainable score for each agent; and
 - `scoring_manifest.json`: weights, thresholds, row counts, source quality, and
   responsible-use limitations.
 
-`data/analytics/` contains four aggregate CSV tables, an analytics manifest, and
-four standalone HTML charts. Open a file in `data/analytics/charts/` in a browser
-to explore it without starting a server. See the
+`data/release-demo/analytics/` contains four aggregate CSV tables, an analytics
+manifest, and four standalone HTML charts. Open a file in its `charts/`
+directory to explore it without starting a server. See the
 [analytics guide](docs/analytics.md) for definitions and interpretation limits.
 
-`models/` contains generated model pipelines, held-out predictions, calibration
-and synthetic-team error tables, `evaluation.json`, and a reproducibility
-manifest. Model artifacts are intentionally excluded from Git. The default
-research label is rare, so for a stable demonstration generate at least 30
-agents and use `--at-risk-fraction 0.5`. See the
+`data/release-demo/models/` contains generated model pipelines, held-out
+predictions, calibration and synthetic-team error tables, `evaluation.json`, and
+a reproducibility manifest. Model artifacts are intentionally excluded from Git.
+The research label is rare, so the release demonstration uses 30 agents and an
+at-risk fraction of 0.5. See the
 [modeling guide](docs/modeling.md) before interpreting any metric.
 
-`data/affectra.db` contains privacy-minimized, versioned run evidence, while
-`data/operations/` contains the generated monitoring baseline and latest health
-report. These are local artifacts excluded from Git. Use a new `--run-version`
-for every completed pipeline run and initialize the baseline only after
-inspecting a known-good run. See the [operations guide](docs/operations.md) and
+`data/release-demo/affectra.db` contains privacy-minimized, versioned run
+evidence, while `data/release-demo/operations/` contains the generated monitoring
+baseline and latest health report. These are local artifacts excluded from Git.
+Use a new run version for every completed pipeline run. See the
+[operations guide](docs/operations.md) and
 [privacy/security design](docs/privacy_security.md) before using this layer.
 
 Use command-line options to create a smaller or different reproducible run:
@@ -164,9 +174,10 @@ Each sprint has a tutorial in `docs/sprints/`. Start with
 followed by [Sprint 4: Analytics and Visualizations](docs/sprints/sprint-04-analytics-visualizations.md)
 and [Sprint 5: Experimental ML](docs/sprints/sprint-05-experimental-ml.md), then
 [Sprint 6: Streamlit Dashboard](docs/sprints/sprint-06-streamlit-dashboard.md)
-and [Sprint 7: Operations](docs/sprints/sprint-07-operations.md).
-Follow the roadmap in order. Every tutorial explains the goal, files changed,
-commands to run, concepts learned, verification steps, and blockers.
+and [Sprint 7: Operations](docs/sprints/sprint-07-operations.md), then finish with
+[Sprint 8: Release Handoff](docs/sprints/sprint-08-release-handoff.md). Every
+tutorial explains the goal, files changed, commands to run, concepts learned,
+verification steps, decisions, and blockers.
 
 ## Core scoring plan
 

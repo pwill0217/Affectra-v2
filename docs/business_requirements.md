@@ -97,6 +97,11 @@ The portfolio release is complete when:
 - Automated tests pass in GitHub Actions.
 - Operational health evidence is machine-readable and privacy-minimized.
 
+Version 1.0 satisfies these criteria for the synthetic portfolio boundary. See
+the [completion matrix](completion_matrix.md) for implementation evidence and
+the [release guide](release_guide.md) for a fresh-clone reproduction. This status
+does not extend to real employee/customer data or production deployment.
+
 ## 7. Out of scope for the first release
 
 - Medical diagnosis or treatment recommendations
@@ -116,3 +121,6 @@ The portfolio release is complete when:
 - PTO data may be incomplete or affected by company policy.
 - A production pilot would require consent, governance, retention rules, access
   controls, bias testing, and review by legal and HR specialists.
+
+The concrete gates and unresolved owner decisions are maintained in
+[pilot requirements](pilot_requirements.md).

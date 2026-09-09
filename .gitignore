@@ -8,6 +8,7 @@ htmlcov/
 
 # Virtual environments and local settings
 .venv/
+.venv-*/
 venv/
 .env
 .env.local
